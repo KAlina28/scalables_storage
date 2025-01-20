@@ -121,7 +121,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request, action, name string, 
 	}
 }
 
-func NewStorage(mux *http.ServeMux, name string, replicas []string, leader bool) *Storage {
+func NewStorage(mux *http.ServeMux, name string, leader bool) *Storage {
 	ctx, cancel := context.WithCancel(context.Background())
 	queue := make(chan MSG)
 	result := &Storage{
@@ -293,7 +293,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	router := NewRouter(mux, [][]string{{"NODE_O"}})
-	storage := NewStorage(mux, "storage", nil, true)
+	storage := NewStorage(mux, "storage", true)
 
 	go router.Run()
 	defer router.Stop()
