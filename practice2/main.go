@@ -154,20 +154,6 @@ func registerHandlers(mux *http.ServeMux, name string, queue chan MSG) {
 	})
 }
 
-func getFeature(data []byte) (*geojson.Feature, string, error) {
-	f, err := geojson.UnmarshalFeature(data)
-	if err != nil {
-		slog.Error("Failed to unmarshal body")
-		return nil, "", err
-	}
-	id, ok := f.ID.(string)
-	if !ok {
-		slog.Error("Failed to get id")
-		return nil, "", errors.New("id should be string")
-	}
-	return f, id, nil
-}
-
 func (s *Storage) saveCheckpoint(features map[string]*geojson.Feature) error {
 	collection := geojson.NewFeatureCollection()
 	for _, f := range features {
